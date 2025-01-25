@@ -15,6 +15,7 @@ export const SignupFormSchema = Yup.object().shape({
       .matches(/[0-9]/, 'Password must contain at least one number.')
       .matches(/[^a-zA-Z0-9]/, 'Password must contain at least one special character.')
       .required('Password is required.'),
+    confirm_password: Yup.string().oneOf([Yup.ref("password")],"Password and confirm password should be same").required("Confirm password is required")
   });
   export type SignupFormData = Yup.InferType<typeof SignupFormSchema>;
 

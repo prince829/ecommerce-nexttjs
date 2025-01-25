@@ -6,23 +6,44 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { SignupFormData, SignupFormSchema } from "@/app/lib/definatations";
 import { EyeIcon, EyeOff } from "lucide-react";
 import Link from "next/link";
-// import { useRouter } from "next/navigation";
+import { useMutation } from "@tanstack/react-query";
+import { listOfQuesryKey } from "@/app/lib/functions/listOfQuesryKey";
+import { signupMutation } from "@/app/api/functions/user.api";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 export default function Signup() {
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setConfirmPassword]=useState(false);
+  const router=useRouter()
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
   };
+  const toggleConfirmPasswordVisibility=()=>{
+    setConfirmPassword((prev)=>!prev)
+  }
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<SignupFormData>({
     resolver: yupResolver(SignupFormSchema),
-    mode: "onChange", // Validation will be triggered on input field change
+    mode: "onChange",
   });
-  const onSubmit = (data: { first_name: string }) => {
+  const {mutateAsync:createUser,isPending:createUserLoading}= useMutation({
+    mutationKey:[listOfQuesryKey.auth.signup],
+    mutationFn:signupMutation,
+    onSuccess:async(res)=>{
+      if(res.status==200){
+        toast.success(res.message)
+        router.push('/login')
+      }else{
+        toast.error(res.message)
+      }
+    }
+  })
+  const onSubmit = (data:SignupFormData) => {
     // Handle form submission
-    console.log("Form Submitted with Data:", data);
+    createUser(data)
   };
   return (
     <>
@@ -137,12 +158,47 @@ export default function Signup() {
                 <p className="text-red-500">{errors.password.message}</p>
               )}
             </div>
+
+            <div>
+              <label
+                htmlFor="password"
+                className="block text-sm/6 font-medium text-gray-900"
+              >
+               Confirm Password
+              </label>
+              <div className="relative mt-2">
+                <input
+                  id="confirm_password"
+                  {...register("confirm_password")}
+                  type={showConfirmPassword ? "text" : "password"}
+                  autoComplete="current-password"
+                  className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                />
+                {/* Eye Icon */}
+                <button
+                  type="button"
+                  onClick={toggleConfirmPasswordVisibility}
+                  className="absolute inset-y-0 right-3 flex items-center text-gray-500 focus:outline-none"
+                >
+                  {showPassword ? (
+                    <EyeOff className="w-5 h-5" />
+                  ) : (
+                    <EyeIcon className="w-5 h-5" />
+                  )}
+                </button>
+              </div>
+              {errors.confirm_password && (
+                <p className="text-red-500">{errors.confirm_password.message}</p>
+              )}
+            </div>
             <div>
               <button
                 type="submit"
+                disabled={createUserLoading}
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
-                Sign up
+                {createUserLoading?'Signing up...': 'Sign up'}
+                
               </button>
             </div>
           </form>
