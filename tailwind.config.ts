@@ -6,6 +6,14 @@ export default {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  safelist: [
+    'border-2',
+    'border-solid',
+    'border-sky-500',
+    'p-4',
+    'text-[#713200]',
+    'border-[#713200]',
+  ],
   theme: {
     extend: {
       colors: {
