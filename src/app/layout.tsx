@@ -4,10 +4,9 @@ import "./globals.css";
 import Header from "./partials/header";
 import Footer from "./partials/footer";
 import { Toaster } from "react-hot-toast";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import ClientQueryProvider from "./components/ClientQueryProvider";
 
-const queryClient = new QueryClient();
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

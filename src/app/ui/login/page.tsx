@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import React, { useState } from "react";
 import Image from "next/image";
@@ -7,7 +8,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { ISignInForm, signInFormSchema } from "@/app/lib/definatations";
 import { EyeIcon, EyeOff } from "lucide-react";
 import { toast } from 'react-hot-toast';
-export default function signIn() {
+export default function SignIn() {
    const [showPassword, setShowPassword] = useState(false);
     const togglePasswordVisibility = () => {
       setShowPassword((prev) => !prev);
@@ -20,7 +21,8 @@ export default function signIn() {
     resolver: yupResolver(signInFormSchema),
     mode: "onChange",
   });
-  const onSubmit = (data: any) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const onSubmit = (_data: any) => {
     toast.success('Signin successfully');
   };
   return (
