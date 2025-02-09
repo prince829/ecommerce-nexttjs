@@ -9,7 +9,6 @@ import Link from "next/link";
 import { useMutation } from "@tanstack/react-query";
 import { listOfQuesryKey } from "@/app/lib/functions/listOfQuesryKey";
 import { signupMutation } from "@/app/api/functions/user.api";
-import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 export default function Signup() {
   const [showPassword, setShowPassword] = useState(false);
@@ -34,10 +33,7 @@ export default function Signup() {
     mutationFn:signupMutation,
     onSuccess:async(res)=>{
       if(res.status==200){
-        toast.success(res.message)
         router.push('/login')
-      }else{
-        toast.error(res.message)
       }
     }
   })

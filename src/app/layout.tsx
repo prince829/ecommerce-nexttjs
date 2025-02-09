@@ -3,9 +3,9 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "./partials/header";
 import Footer from "./partials/footer";
-import { Toaster } from "react-hot-toast";
 import ClientQueryProvider from "./components/ClientQueryProvider";
-
+import {Toaster} from 'sonner'
+import EventListeners from "./components/EventListner/EventListner";
 
 
 const geistSans = Geist({
@@ -33,14 +33,8 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-         <Toaster position="top-right" toastOptions={{
-          style: {
-            border: '1px solid rgb(0, 17, 113)',
-            padding: '16px',
-            color: '#713200',
-          }
-          
-         }} />
+        <Toaster richColors position="bottom-left"></Toaster>
+        <EventListeners></EventListeners>
         <Header></Header>
         <ClientQueryProvider>{children}</ClientQueryProvider>
         <Footer></Footer>

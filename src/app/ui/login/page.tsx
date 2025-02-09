@@ -7,7 +7,9 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ISignInForm, signInFormSchema } from "@/app/lib/definatations";
 import { EyeIcon, EyeOff } from "lucide-react";
-import { toast } from 'react-hot-toast';
+import { useMutation } from "@tanstack/react-query";
+import { listOfQuesryKey } from "@/app/lib/functions/listOfQuesryKey";
+import { signinMutation } from "@/app/api/functions/user.api";
 export default function SignIn() {
    const [showPassword, setShowPassword] = useState(false);
     const togglePasswordVisibility = () => {
@@ -21,9 +23,17 @@ export default function SignIn() {
     resolver: yupResolver(signInFormSchema),
     mode: "onChange",
   });
+  const {mutateAsync:login,isPending:signInLoading}=useMutation({
+    mutationKey:[listOfQuesryKey.auth.signin],
+    mutationFn:signinMutation,
+    onSuccess:async(res)=>{
+      if(res.status==200){
+      }
+    }
+  })
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const onSubmit = (_data: any) => {
-    toast.success('Signin successfully');
+  const onSubmit = (data: any) => {
+    login(data)
   };
   return (
     <>
@@ -31,7 +41,7 @@ export default function SignIn() {
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <Image
             alt="Your Company"
-            src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=600"
+            src="https://tailwindui.com/plus/img/logos/mark.svg"
             width={10}
             height={10}
             className="mx-auto h-10 w-auto"
@@ -115,9 +125,10 @@ export default function SignIn() {
             <div>
               <button
                 type="submit"
+                disabled={signInLoading}
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
-                Sign in
+                {signInLoading?'Signin In...':' Sign in'}
               </button>
             </div>
           </form>
