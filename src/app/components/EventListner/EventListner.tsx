@@ -4,8 +4,6 @@ import { useCallback } from "react";
 import { toast } from "sonner";
 
 export default function EventListeners() {
-    console.log("Hello");
-    
  useCallback(
     (data: { message: string; variant: string }) => {
       if (data.variant === "error") {

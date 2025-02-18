@@ -14,6 +14,13 @@ const nextConfig: NextConfig = {
   //     },
   //   ];
   // },
+  webpack(config) {
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ["@svgr/webpack"],
+    });
+    return config;
+  },
   images:{
     remotePatterns:[
       {
@@ -31,7 +38,8 @@ const nextConfig: NextConfig = {
         hostname:"flowbite.com"
       }
     ]
-  }
+  },
+  // skipMiddlewareUrlNormalize:true
 };
 
 export default nextConfig;

@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import React, { useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -10,8 +9,11 @@ import { EyeIcon, EyeOff } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
 import { listOfQuesryKey } from "@/app/lib/functions/listOfQuesryKey";
 import { signinMutation } from "@/app/api/functions/user.api";
+import { setCookieClient } from "@/app/lib/functions/storage.lib";
+import { useRouter } from "next/navigation";
 export default function SignIn() {
    const [showPassword, setShowPassword] = useState(false);
+   const router=useRouter()
     const togglePasswordVisibility = () => {
       setShowPassword((prev) => !prev);
     };
@@ -28,6 +30,8 @@ export default function SignIn() {
     mutationFn:signinMutation,
     onSuccess:async(res)=>{
       if(res.status==200){
+        setCookieClient(process.env.NEXT_PUBLIC_APP_TOKEN_NAME as string,res?.data?.token)
+        router.push('/profile')
       }
     }
   })
@@ -39,14 +43,14 @@ export default function SignIn() {
     <>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <Image
+          {/* <Image
             alt="Your Company"
             src="https://tailwindui.com/plus/img/logos/mark.svg"
             width={10}
             height={10}
             className="mx-auto h-10 w-auto"
             priority={false}
-          />
+          /> */}
           <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">
             Sign in to your account
           </h2>
