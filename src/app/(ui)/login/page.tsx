@@ -11,6 +11,7 @@ import { listOfQuesryKey } from "@/app/lib/functions/listOfQuesryKey";
 import { signinMutation } from "@/app/api/functions/user.api";
 import { setCookieClient } from "@/app/lib/functions/storage.lib";
 import { useRouter } from "next/navigation";
+export const config={amp: 'hybrid'}
 export default function SignIn() {
    const [showPassword, setShowPassword] = useState(false);
    const router=useRouter()

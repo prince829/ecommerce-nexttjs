@@ -1,13 +1,12 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Header from "./partials/header";
-import Footer from "./partials/footer";
 import ClientQueryProvider from "./components/ClientQueryProvider";
 import {Toaster} from 'sonner'
 import EventListeners from "./components/EventListner/EventListner";
 import { ThemeProvider } from "./(ui)/(admin)/context/ThemeContext";
 import { SidebarProvider } from "./(ui)/(admin)/context/SidebarContext";
+import { StoreProvider } from "./StoreProvider";
 
 
 const geistSans = Geist({
@@ -35,13 +34,13 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <StoreProvider>
         <Toaster richColors position="bottom-left"></Toaster>
-        <EventListeners></EventListeners>
-        {/* <Header></Header> */}
+        <EventListeners/>
         <ThemeProvider>
         <ClientQueryProvider><SidebarProvider>{children}</SidebarProvider></ClientQueryProvider>
         </ThemeProvider>
-        {/* <Footer></Footer> */}
+        </StoreProvider>
       </body>
     </html>
   );

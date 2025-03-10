@@ -20,14 +20,5 @@ export default function EventListeners() {
     },
     []
   );
-
-//   const router = useRouter();
-//   const handleRoutes = useCallback((pathName: string) => {
-//     router.push(pathName);
-//   }, []);
-
-//   useEventEmitter(events.showNotification, showNotifications);
-//   useEventEmitter(events.routerPush, handleRoutes);
-
   return null;
 }
